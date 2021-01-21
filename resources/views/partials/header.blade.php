@@ -12,6 +12,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('classrooms.index') }}">Classrooms</a> <!-- questo ci porta sulla route classrooms che utilizza il metodo index -->
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('classrooms.create') }}">New Classroom</a> <!-- questo ci porta sulla route classrooms che utilizza il metodo index -->
+              </li>
           </ul>
         </div>
      </nav>
