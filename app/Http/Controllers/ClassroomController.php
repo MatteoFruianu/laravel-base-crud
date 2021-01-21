@@ -50,9 +50,12 @@ class ClassroomController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Classroom $classroom) //questa tra parentesi è la versione contratta della logica contenuta tra le graffe ->
     {
-        //
+        
+        // $classroom = Classroom::find($id);
+        
+        return view('classrooms.show', compact('classroom'));
     }
 
 
