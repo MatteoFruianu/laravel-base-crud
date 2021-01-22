@@ -59,7 +59,11 @@ class ClassroomController extends Controller
         $classroom->description = $data['description'];
 
         $saved = $classroom->save();
-        dd($saved);
+        // dd($saved);
+        if($saved == true) {
+            return redirect()->route('classrooms.show', $classroom->id); //se tutto è andato a buon fine questo sereve a reindirizzare alla pagina appena creata
+        }    
+
     }
 
     /**
