@@ -41,12 +41,15 @@ class ClassroomController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+        
+
         $data = $request->all();
+
         // dd($data);
+
         // validazione
         $request->validate([
-            'name' => 'required | unique:classroom | max:10',
+            'name' => 'required|unique:classrooms|max:10',
             'description' => 'required'
         ]);
 
