@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Classroom;
+use Illuminate\Validation\Rule; //importare per permettere le modifiche
 
 
 // Tabella predisposta da Laravel con tutti i metodi CRUD, creata automaticamente con il comando da terminale 'php artisan make:controller --resource ClassroomController'
@@ -55,8 +56,9 @@ class ClassroomController extends Controller
 
         // salvare a db
         $classroom = new Classroom();
-        $classroom->name = $data['name'];
-        $classroom->description = $data['description'];
+        // $classroom->name = $data['name'];
+        // $classroom->description = $data['description']; -> al posto di elencare ad uno ad uno concateno il metodo fill
+        $classroom->fill($data);
 
         $saved = $classroom->save();
         // dd($saved);
@@ -92,7 +94,9 @@ class ClassroomController extends Controller
      */
     public function edit($id)
     {
-        //
+        $classroom = Classroom::find($id);
+        return view('classrooms.edit', compact('classroom'));
+
     }
 
     /**
@@ -104,7 +108,28 @@ class ClassroomController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //DATI INVIATI DALLA FORM
+        $data = $request->all();
+
+        //ISTANZA SPECIFICA
+        $classroom = Classroom::find($id); //per beccare l'elemento specifico targetizzato
+
+       //VALIDAZIONE
+        $request->validate([
+            'name' => [
+                'required',
+                Rule::unique('classrooms')->ignore($id),
+                'max:10'],
+            'description' => 'required'
+        ]);
+
+        // aggiornare dati a db
+
+        $updated = $classroom->update($data);
+
+        if($updated) {
+            return redirect()->route('classrooms.show', $id);
+        }
     }
 
     /**
@@ -115,6 +140,14 @@ class ClassroomController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $classroom = Classroom::find($id);
+
+        $ref = $classroom->name;
+
+        $deleted = $classroom->delete();
+
+        if($deleted) {
+            return redirect()->route('classrooms.index')->with('deleted', $ref);
+        }
     }
 }
